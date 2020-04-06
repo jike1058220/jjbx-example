@@ -1,0 +1,113 @@
+spring:
+  application:
+    # 应用名称
+    name: insurance-huaguilife
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.193.196.2:3306/jj_insurance?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    username: jjbx
+    password: ENC(id/lw7vg0H3IrUUJwFJFjqzreh3v82Gn)
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 20
+  # redis集群配置
+  redis:
+    cluster:
+      # 集群节点
+      nodes: 10.193.196.2:7001,10.193.196.2:7002,10.193.196.2:7003,10.193.196.2:7004,10.193.196.2:7005,10.193.196.2:7006
+      # Redis服务器连接密码（默认为空）
+      password: ENC(id/lw7vg0H3IrUUJwFJFjqzreh3v82Gn)
+      # 连接超时时间（毫秒）默认2000ms
+      timeout: 10000ms
+      #最大空闲数
+      max-redirects: 300
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）默认 8
+        max-active: 50
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）默认 -1
+        max-wait: 5000ms
+        # 连接池中的最大空闲连接，默认 8
+        max-idle: 10
+        # 连接池中的最小空闲连接，默认 0
+        min-idle: 0
+  mvc:
+    # 静态文件路径
+    static-path-pattern: /static/**
+
+mybatis:
+  type-aliases-package: com.jjbx.dao.dto
+  mapper-locations: classpath*:mappers/*.xml
+
+# 注册中心
+eureka:
+  client:
+    # EurekaServer地址
+    service-url:
+      defaultZone: http://insurance-eureka-jjbxjj-test-8080.zkj.test/eureka/
+  instance:
+    #使用IP注册
+    prefer-ip-address: true
+    #ip-address: 192.168.1.1 #强制指定IP地址，默认会获取本机的IP地址
+    instance-id: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
+    hostname: ${spring.cloud.client.ip-address}
+
+# 负载均衡
+ribbon:
+  # 连接超时时间(ms)
+  ConnectTimeout: 60000
+  # 通信超时时间(ms)
+  ReadTimeout: 60000
+  # 同一实例的重试次数
+  MaxAutoRetries: 0
+  # 同一服务不同实例的重试次数
+  MaxAutoRetriesNextServer: 1
+  # 是否对所有操作重试
+  OkToRetryOnAllOperations: true
+  eureka:
+    enabled: true
+
+# 断路器
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            # 全局熔断超时时长
+            timeoutInMilliseconds: 60000
+
+# Actuator监控管理
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露Actuator端点，如需暴露多个用,分隔；如需暴露所有端点，用'*'
+        include: '*'
+  endpoint:
+    health:
+      # 是否展示健康检查详情
+      show-details: ALWAYS
+
+# 日志相关配置，SpringBoot的Logging 配置的级别有7个：TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+# logging:
+#   # 打印日志的级别
+#   level:
+# #    com.jjbx: WARN
+# #    org.springframework.security: DEBUG
+# #    root: INFO
+#     root: WARN
+#     tk.mybatis.mapper: WARN
+# #    com.jjbx.dao.mapper.*: WARN
+#   # 设置日志保存的路径，path和file只需要设置一个，指定path则日志名称固定为spring.log
+# #  path: logs/
+#   file: /data/logs/${spring.application.name}/${spring.application.name}.log
+# #    max-size: 1GB
+
+# 自定义参数
+huaguilife:
+    encode: UTF-8
+    policy_back_url: /huaguilife_policy_back
+    api_order_api: http://insurance-order-jjbxjj-test-8080.zkj.test/orderSave/orderSave
+    api_toPolicy_api: http://insurance-order-jjbxjj-test-8080.zkj.test/orderSave/orderToPolicySave
+    key: bcNehIY9V0mHwB4K

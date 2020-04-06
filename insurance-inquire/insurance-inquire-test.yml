@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.193.196.2:3306/jj_insurance?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    username: root
+    password: ENC(id/lw7vg0H3IrUUJwFJFjqzreh3v82Gn)
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 20
+      
+# 注册中心
+eureka:
+  client:
+    # 是否注册自己的信息到EurekaServer，默认是true
+    register-with-eureka: true
+    # 是否拉取其它服务的信息，默认是true
+    fetch-registry: true
+    # EurekaServer地址，现在是自己的地址，如果是集群，需要加上其它Server的地址。
+    service-url:
+      defaultZone: http://insurance-eureka-jjbxjj-test-8080.zkj.test/eureka/
+  instance:
+    # 发呆时间，即服务续约到期时间（缺省为90s）
+    lease-expiration-duration-in-seconds: 5
+    # 心跳时间，即服务续约间隔时间（缺省为30s）
+    leaseRenewalIntervalInSeconds: 10
+    # 健康检查页面URL
+    health-check-url-path: /actuator/health
+    # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
+    prefer-ip-address: true
+    # 指定自己的ip信息，不指定的话会自己寻找
+    # ip-address: ${EUREKA_ZONE_HOST:localhost}
+    # 制定instance-id的生成策略，按实际调整，确保每个服务唯一即可。
+    instance-id: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
+
+# 负载均衡
+ribbon:
+  # 连接超时时间(ms)
+  ConnectTimeout: 60000
+  # 通信超时时间(ms)
+  ReadTimeout: 60000
+  # 同一实例的重试次数
+  MaxAutoRetries: 0
+  # 同一服务不同实例的重试次数
+  MaxAutoRetriesNextServer: 1
+  # 是否对所有操作重试
+  OkToRetryOnAllOperations: true
+  eureka:
+    enabled: true
+
+# 断路器
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            # 全局熔断超时时长
+            timeoutInMilliseconds: 60000
+

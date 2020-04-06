@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.193.196.2:3306/jj_insurance?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    username: jjbx
+    password: jjbx@123
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 20
+
+ean:
+    app_id: FF0A9AF50419C454F225B27EE31F5A60
+    app_secret: 90195E6FBFC58CF0E2F64EB2680282DB
+    ip: open.1an.com
+    encode: UTF-8
+    redirectUrl: https://jjbxapi.zkj.com/api/1an/pay_callback
+    redirectUrl_second: https://jjbxapi.zkj.com/api/1an/pay_callback_second
+    debug: false
+    api_order_api: https://jjbxapi.zkj.com/api/order/orderSave/orderSave
+    api_toPolicy_api: https://jjbxapi.zkj.com/api/order/orderSave/orderToPolicySave
+    dataSource: O-DKTJJ
+    interfaceCode: yaH5Pay
